@@ -1,19 +1,23 @@
 import os
 import pandas as pd
 
-# Checks each word in the row to see if it matches
-def check_suffix(row, suffix):
-    words = row.split()
-    return any(words.endswith(suffix) for words in words)
-
-
 def find_word_from_end_string(file_name, suffix):
     # Creating & formatting proper dataframe from given txt file
-    df = pd.read_csv(file_name, header = None)
-    melted_df = df.melt()
-    melted_df = melted_df.drop(columns=['variable'])
+    df = pd.read_csv(file_name, sep = ' ', header = None)
+    output_rows = []
 
-    melted_df.to_csv("ans.txt", header=False, index=False, sep='\t', mode='w')
+    # piping the count at the end of the row
+    for i, row in df.iterrows():
+        count = 0
+        for words in row:
+            if words.endswith(suffix):    
+                count += 1
+        if count > 0:
+            output_row = ' '.join(row) + f'|{count}'
+            output_rows.append(output_row)
+            
 
+    with open("ans.txt", 'w') as f:
+        f.write("\n".join(output_rows))
 
-find_word_from_end_string("file2.txt", "e")
+find_word_from_end_string("file1.txt", "y")
