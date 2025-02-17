@@ -20,4 +20,5 @@ def find_word_from_end_string(file_name, suffix):
     with open("ans.txt", 'w') as f:
         f.write("\n".join(output_rows))
 
+# error when # of words on each row is different
 find_word_from_end_string("file1.txt", "y")
