@@ -3,34 +3,25 @@ import pandas as pd
 
 
 def find_word_from_end_string(file_name, suffix):
-    # Creating proper dataframe from given txt file
-    df = pd.read_csv(file_name, sep = ' ', header = None, on_bad_lines = 'skip')
     output_rows = []
 
-    # Piping the count at the end of the row
-    for i, row in df.iterrows():
-        count = 0
-        # Store all valid words for output row
-        valid_words = []  
-        for words in row:
-            # Skip nan values
-            if pd.notna(words):
-                # Convert word to string to avoid float issues
-                words = str(words)
-                if words.endswith(suffix):    
+    with open(file_name, "r") as f:
+        for line in f:
+            count = 0
+
+            for word in line.split():
+                if word.endswith(suffix):
                     count += 1
-                # Add valid word to filtered row array
-                valid_words.append(words)  
-        if count > 0:
-            output_row = ' '.join(valid_words) + f'|{count}'
-            output_rows.append(output_row)
-            
+            if count > 0:
+                output_row = line.strip() + f'|{count}'
+                output_rows.append(output_row)
 
     with open("ans.txt", 'w') as f:
         f.write("\n".join(output_rows))
+            
+    
 
-
-find_word_from_end_string("file4.txt", "e")
+find_word_from_end_string("file1.txt", "y")
 
 
 
